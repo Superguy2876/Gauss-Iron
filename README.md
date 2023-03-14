@@ -1,5 +1,5 @@
 # Gauss-Iron
-Atmospheric Iron dispersal through gaussian simulation.
+Atmospheric Iron dispersal through gaussian puff simulation.
 
 ArcGIS project and Thor data is not included in this repository. Neither is the resulting raster files.
 
