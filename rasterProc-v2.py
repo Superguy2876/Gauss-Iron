@@ -33,7 +33,8 @@ def create_raster(array: np.ndarray, cell_size: float, corner_x: float, corner_y
 
     try:
       outRaster = arcpy.NumPyArrayToRaster(array, lower_left_corner=cornerPoint, x_cell_size=cell_size)
-      outRaster.save('C:/Users/patto/Documents/dev/TheProjectItself/MyProject/rasterdata/' + name + '.tif')
+      current_folder = os.path.dirname(os.path.abspath(__file__))
+      outRaster.save(current_folder + '/rasterdata/' + name + '.tif')
     except RuntimeError as e:
       # split the numpy array into quaters and try again
       print('splitting array')

@@ -69,7 +69,6 @@ for line in thor:
   if line_count % 1000 == 0:
     print(f"processed {line_count} lines")
   line_list = line.split(",")
-  dontSkip = True
 
   # getting possible values of latlong
   try:
@@ -91,41 +90,41 @@ for line in thor:
 
   if line_list[CountryFlyingMission].strip().lower() == "":
     # print(f"CountryFlyingMission {line_list[CountryFlyingMission]}")
-    dontSkip = False
+    continue
   if line_list[TgtCountry].strip().lower() != "laos":
     # print(f"TgtCountry {line_list[TgtCountry]}")
-    dontSkip = False
+    continue
   if line_list[NumWeaponsDelivered].strip().lower() in zero:
     # print(f"NumWeaponsDelivered {line_list[NumWeaponsDelivered]}")
-    dontSkip = False
+    continue
   if line_list[WeaponsDeliveredWeight].strip().lower() in zero:
     # print(f"WeaponsDeliveredWeight {line_list[WeaponsDeliveredWeight]}")
-    dontSkip = False
+    continue
   if line_list[WeaponTypeWeight].strip().lower() in zero:
     # print(f"WeaponTypeWeight {line_list[WeaponTypeWeight]}")
-    dontSkip = False
+    continue
   if line_list[TgtLatDD_DDD_WGS84].strip().lower() in zero:
     # print(f"TgtLatDD_DDD_WGS84 {line_list[TgtLatDD_DDD_WGS84]}")
-    dontSkip = False
+    continue
   if line_list[TgtLonDDD_DDD_WGS84].strip().lower() in zero:
     # print(f"TgtLonDDD_DDD_WGS84 {line_list[TgtLonDDD_DDD_WGS84]}")
-    dontSkip = False
+    continue
   if line_list[gunMissileBombType] in ["0", "4"]:
-    dontSkip = False
+    continue
 
-  if dontSkip:
-    processed_line = []
-    for index in col_index:
-      processed_line.append(line_list[index])
-      
-    # print(f"{processed_line}")
-    thor_utf.write(f"{','.join(processed_line)}")
-    thor_coord.write(f"{line_list[TgtLatDD_DDD_WGS84]},{line_list[TgtLatDD_DDD_WGS84]}\n")
-    flush_count += 1
-    if flush_count == 1000:
-      thor_utf.flush()
-      thor_coord.flush()
-      flush_count = 0
+  
+  processed_line = []
+  for index in col_index:
+    processed_line.append(line_list[index])
+    
+  # print(f"{processed_line}")
+  thor_utf.write(f"{','.join(processed_line)}")
+  thor_coord.write(f"{line_list[TgtLatDD_DDD_WGS84]},{line_list[TgtLatDD_DDD_WGS84]}\n")
+  flush_count += 1
+  if flush_count == 1000:
+    thor_utf.flush()
+    thor_coord.flush()
+    flush_count = 0
 
 print(latlong_values)
 print(float_count)
