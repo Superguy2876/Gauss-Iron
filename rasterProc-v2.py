@@ -124,11 +124,8 @@ def radial_divide(array: np.ndarray, point: Tuple[int, int], radius: float, valu
   cy = point[1]
 
   mask = (x[np.newaxis,:]-cx)**2 + (y[:,np.newaxis]-cy)**2 <= radius**2
-
-  # number of points within the radius
-  num_points = np.sum(mask)
-
-  array[mask] += (value / num_points)
+  
+  array[mask] += value
 
   return array
 
@@ -140,10 +137,13 @@ def staticProcessor(array: np.ndarray, sorties: list, name: str, static_type: st
     y = (round(sortie['y']/raster_info['cellsize']) * raster_info['cellsize'] - raster_info['y']) / raster_info['cellsize']
     # get the value of the point
     value = sortie[static_type]
+    # calculate the area of the circle
+    area = math.pi * (((sortie['explosiveWeightKg'] ** 0.25) * 19.5) ** 2)
+    material_density = value / area
     # calculate the radius of the point
-    radius = ((sortie['explosiveWeightKg'] ** -0.25) * 19.5) / raster_info['cellsize'] 
+    radius = ((sortie['explosiveWeightKg'] ** 0.25) * 19.5) / raster_info['cellsize'] 
     # divide the value evenly among the points within the radius
-    array = radial_divide(array, (int(x), int(y)), radius=radius, value=value)
+    array = radial_divide(array, (int(x), int(y)), radius=radius, value=material_density)
     count += 1
     if count % 100 == 0:
       print(count)
